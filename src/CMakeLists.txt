@@ -2,8 +2,13 @@ include(CTest)
 enable_testing()
 
 include_directories("./include")
+
+file(GLOB SOURCES
+    *.cpp
+)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "..")
-add_executable(raytracer main.cpp)
+add_executable(raytracer ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC

@@ -53,17 +53,18 @@ struct image{
     inline int32_t width() const {return m_width;} 
     inline int32_t height() const {return m_height;} 
 
+    friend std::ostream& operator<<(std::ostream& os, const image& img) {
+        img.write_to_stream(os);
+        return os;
+    }
 
 
-private:
-    int32_t m_width, m_height;
-    int32_t* m_data;
+    private:
+        int32_t m_width, m_height;
+        int32_t* m_data;
 
 };
 
-std::ostream& operator<<(std::ostream& os, const image& img){
-    img.write_to_stream(os);
-    return os;
-}
+
 
 #endif
