@@ -5,3 +5,6 @@ raytracer
 *.tcl
 CMakeFiles
 build
+*.ppm
+raytracer
+.vscode
