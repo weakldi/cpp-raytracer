@@ -2,7 +2,7 @@
 #include <fstream>
 
 
-#include "glm.hpp"
+#include "util.hpp"
 #include "image.hpp"
 #include "camera.hpp"
 #include "world.hpp"

@@ -3,6 +3,7 @@
 
 #include "hittable.hpp"
 #include "glm.hpp"
+#include "ray.hpp"
 
 class sphere : public hittable{
     public:

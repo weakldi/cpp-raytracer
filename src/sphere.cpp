@@ -34,7 +34,6 @@ bool sphere::hit(const ray& ray,double t_min, double t_max, hit_record& hit_reco
 
         double t_1 = (-b_half - sqrt_discriminant) / a;
         double t_2 = (-b_half + sqrt_discriminant) / a;
-        std::cout << t_1 << " " << t_2 << " ";
         
         double t = t_1 < t_2 ? t_1 : t_2;
         if(t_1 < t_min || t_max < t_1)
@@ -52,7 +51,7 @@ bool sphere::hit(const ray& ray,double t_min, double t_max, hit_record& hit_reco
         hit_record.set_face_norlam( ray, normal / m_radius); 
         hit_record.point = hit_point;
         hit_record.time = t; 
-        std::cout << std::endl;
+        
         return true;
     }
     return false;

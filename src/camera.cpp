@@ -1,8 +1,7 @@
 #include "camera.hpp"
 
 #include <iostream>
-#include <limits.h>
-#include "ray.hpp"
+#include "util.hpp"
 #include "sphere.hpp"
 
 glm::dvec3 ray_color(const ray& r) {
@@ -10,7 +9,7 @@ glm::dvec3 ray_color(const ray& r) {
 
     sphere sphere({0,0,-2}, 0.5);
     hit_record record;
-    if(sphere.hit(r,-0, std::numeric_limits<double>::infinity(), record))
+    if(sphere.hit(r,-0, infinity, record))
     {
         //return {1,0,0};
         return 0.5*(record.normal+glm::dvec3(1,1,1));
