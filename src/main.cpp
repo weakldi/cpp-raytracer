@@ -35,9 +35,9 @@ int main(int argc, char** argv) {
             exit(EXIT_FAILURE);
         } 
     }
-
+    
     w.add(make_shared<sphere>(glm::dvec3{0,0,-1},0.5));
-
+    w.add(make_shared<sphere>(glm::dvec3{0,-101,-1},100));
 
     cam.render(w, img);
     
