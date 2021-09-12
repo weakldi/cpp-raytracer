@@ -8,12 +8,12 @@ class sphere : public hittable{
     public:
         sphere() = delete;
         sphere(const glm::dvec3& origin, const double radius)
-            : orig(origin), r(radius) {}
+            : m_orig(origin), m_radius(radius) {}
 
-        virtual bool hit(const ray& ray, hit_record& hit_record);
+        virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record);
     public:
-        glm::dvec3 orig;
-        double r;
+        glm::dvec3 m_orig;
+        double m_radius;
 };
 
 #endif

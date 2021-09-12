@@ -31,7 +31,7 @@ struct image{
     }
 
     inline void write_rgb(const int32_t x, const int32_t y, int32_t rgb){
-        m_data[x+m_width*y] = rgb;
+        m_data[x+(m_width*(m_height-1-y))] = rgb;
     }
 
     inline int32_t get_rgb(const int32_t x, const int32_t y){

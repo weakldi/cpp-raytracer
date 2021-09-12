@@ -10,6 +10,6 @@ struct world : public hittable{
     public:
         world() {}
 
-        virtual bool hit(const ray& ray, hit_record& hit_record);
+        virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record);
 };
 #endif

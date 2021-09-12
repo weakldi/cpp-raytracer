@@ -1,18 +1,29 @@
 #include "camera.hpp"
 
 #include <iostream>
-
+#include <limits.h>
 #include "ray.hpp"
+#include "sphere.hpp"
 
 glm::dvec3 ray_color(const ray& r) {
     glm::dvec3 unit_direction = glm::normalize(r.m_dir);
+
+    sphere sphere({0,0,-2}, 0.5);
+    hit_record record;
+    if(sphere.hit(r,-0, std::numeric_limits<double>::infinity(), record))
+    {
+        //return {1,0,0};
+        return 0.5*(record.normal+glm::dvec3(1,1,1));
+    }
+
     auto t = 0.5*(unit_direction.y + 1.0);
     return (1.0-t)*glm::dvec3(1.0, 1.0, 1.0) + t*glm::dvec3(0.5, 0.7, 1.0);
 }
 
 void camera::render(image& img){
-    auto viewport_w = 2.0;
-    auto viewport_h = 16.0/9.0 * viewport_w;
+    const auto aspect_ratio = (double)img.width() / (double)img.height();
+    auto viewport_h = 2.0;
+    auto viewport_w = aspect_ratio * viewport_h;
     auto focal_len = 1.0;
 
     origin = glm::dvec3(0,0,0);
@@ -21,10 +32,10 @@ void camera::render(image& img){
     auto lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - glm::dvec3(0,0, focal_len);
 
     for(int j = img.height()-1; j >= 0; --j){
-        std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
+        std::cout << "\rScanlines remaining: " << j << ' ' << std::endl;
         for(int i = 0; i < img.width(); i++){
-            auto u = double(i) / img.width();
-            auto v = double(j) / img.height();
+            auto u = double(i) / (img.width()-1);
+            auto v = double(j) / (img.height()-1);
 
             ray r(origin,(lower_left_corner + u*horizontal + v*vertical - origin));
 
