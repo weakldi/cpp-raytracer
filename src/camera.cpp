@@ -4,17 +4,21 @@
 #include "util.hpp"
 #include "sphere.hpp"
 
-glm::dvec3 ray_color(const ray& r, const world& world) {
-    glm::dvec3 unit_direction = glm::normalize(r.m_dir);
-
+glm::dvec3 ray_color(const ray& r, const world& world, int32_t depth) {
+    
+    
+    if(depth <= 0)
+        return glm::dvec3(1.0, 1.0, 1.0);
     
     hit_record record;
-    if(world.hit(r,-0, infinity, record))
+    if(world.hit(r,0.001, infinity, record))
     {
-        //return {1,0,0};
-        return 0.5*(record.normal+glm::dvec3(1,1,1));
+        glm::dvec3 target = record.point+record.normal+random_point_in_hemisphere(record.normal);
+        
+        return 0.5*ray_color(ray(record.point, target - record.point), world, --depth);
     }
-
+    auto unit_direction = glm::normalize(r.m_dir);
+    
     auto t = 0.5*(unit_direction.y + 1.0);
     return (1.0-t)*glm::dvec3(1.0, 1.0, 1.0) + t*glm::dvec3(0.5, 0.7, 1.0);
 }
@@ -42,14 +46,16 @@ void camera::render(const world& world, image& img) const{
             glm::dvec3 color{0,0,0};
             for(int32_t sampel = 0; sampel < sampels; sampel++)
             {
+                
                 auto u = (i + random_double()) / (img.width()-1);
                 auto v = (j + random_double()) / (img.height()-1);
 
                 ray r(origin,(lower_left_corner + u*horizontal + v*vertical - origin));
-                color += ray_color(r,world);
+                
+                color += ray_color(r,world,50);
             }
-            color /= sampels;
-            img.write_rgb(i,j,color);
+            
+            img.write_rgb(i,j,color,sampels);
         }
     }
 }

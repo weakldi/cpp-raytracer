@@ -1,10 +1,7 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef IMAGE
+#define IMAGE
 
-#include <cstdint>
-#include <memory>
-#include <ostream>
-#include <glm.hpp>
+#include "util.hpp"
 
 struct image{
     image() = delete;
@@ -16,10 +13,18 @@ struct image{
         delete[] m_data;
     }
 
-    inline void write_rgb(const int32_t x, const int32_t y,const glm::vec3 color){
-        int32_t c = (static_cast<int32_t>(255.999 * color.r) << 16) | 
-                    (static_cast<int32_t>(255.999 * color.g) << 8 ) |
-                    (static_cast<int32_t>(255.999 * color.b) <<  0);
+    inline void write_rgb(const int32_t x, const int32_t y,const glm::dvec3 color, uint32_t samples){
+        double scale = 1.0 / samples;
+        /*
+            double r = sqrt(color.r * scale);
+        double g = sqrt(color.g * scale);
+        double b = sqrt(color.b * scale);
+
+        */
+        glm::dvec3 _color =  glm::sqrt(color*scale);
+        int32_t c = (static_cast<int32_t>(256 * clamp(_color.r, 0, 0.999)) << 16) | 
+                    (static_cast<int32_t>(256 * clamp(_color.g, 0, 0.999)) << 8 ) |
+                    (static_cast<int32_t>(256 * clamp(_color.b, 0, 0.999)) <<  0);
         write_rgb(x,y,c);
     }
 
@@ -67,4 +72,4 @@ struct image{
 
 
 
-#endif
+#endif /* IMAGE */

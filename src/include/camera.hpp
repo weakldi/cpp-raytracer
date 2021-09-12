@@ -15,7 +15,7 @@ struct camera{
 
         ray get_ray(double u, double v) const;
         void render(const world& world, image& img) const;
-
+        
     public:
         glm::dvec3 origin;
         glm::dvec3 eye;
