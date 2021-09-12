@@ -19,6 +19,10 @@ glm::dvec3 ray_color(const ray& r, const world& world) {
     return (1.0-t)*glm::dvec3(1.0, 1.0, 1.0) + t*glm::dvec3(0.5, 0.7, 1.0);
 }
 
+ray camera::get_ray(double u, double v) const {
+    return ray({0,0,0},{0,0,0});
+}
+
 void camera::render(const world& world, image& img) const{
     const auto aspect_ratio = (double)img.width() / (double)img.height();
     auto viewport_h = 2.0;
@@ -30,15 +34,22 @@ void camera::render(const world& world, image& img) const{
     auto vertical   = glm::dvec3(0,viewport_h,0);
     auto lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - glm::dvec3(0,0, focal_len);
 
-    for(int j = img.height()-1; j >= 0; --j){
+    for(int j = img.height()-1; j >= 0; --j)
+    {
         std::cout << "\rScanlines remaining: " << j << ' ' << std::endl;
-        for(int i = 0; i < img.width(); i++){
-            auto u = double(i) / (img.width()-1);
-            auto v = double(j) / (img.height()-1);
+        for(int i = 0; i < img.width(); i++)
+        {
+            glm::dvec3 color{0,0,0};
+            for(int32_t sampel = 0; sampel < sampels; sampel++)
+            {
+                auto u = (i + random_double()) / (img.width()-1);
+                auto v = (j + random_double()) / (img.height()-1);
 
-            ray r(origin,(lower_left_corner + u*horizontal + v*vertical - origin));
-
-            img.write_rgb(i,j,ray_color(r, world));
+                ray r(origin,(lower_left_corner + u*horizontal + v*vertical - origin));
+                color += ray_color(r,world);
+            }
+            color /= sampels;
+            img.write_rgb(i,j,color);
         }
     }
 }
