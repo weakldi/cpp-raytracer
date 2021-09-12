@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 #include <glm.hpp>
-
+#include "world.hpp"
 #include "image.hpp"
 
 
@@ -12,7 +12,7 @@ struct camera{
         }
 
 
-        void render(image& img);
+        void render(const world& world, image& img) const;
 
     public:
         glm::dvec3 origin;

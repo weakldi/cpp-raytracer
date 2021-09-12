@@ -11,7 +11,7 @@ class sphere : public hittable{
         sphere(const glm::dvec3& origin, const double radius)
             : m_orig(origin), m_radius(radius) {}
 
-        virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record);
+        virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const override;
     public:
         glm::dvec3 m_orig;
         double m_radius;

@@ -4,12 +4,12 @@
 #include "util.hpp"
 #include "sphere.hpp"
 
-glm::dvec3 ray_color(const ray& r) {
+glm::dvec3 ray_color(const ray& r, const world& world) {
     glm::dvec3 unit_direction = glm::normalize(r.m_dir);
 
-    sphere sphere({0,0,-2}, 0.5);
+    
     hit_record record;
-    if(sphere.hit(r,-0, infinity, record))
+    if(world.hit(r,-0, infinity, record))
     {
         //return {1,0,0};
         return 0.5*(record.normal+glm::dvec3(1,1,1));
@@ -19,13 +19,13 @@ glm::dvec3 ray_color(const ray& r) {
     return (1.0-t)*glm::dvec3(1.0, 1.0, 1.0) + t*glm::dvec3(0.5, 0.7, 1.0);
 }
 
-void camera::render(image& img){
+void camera::render(const world& world, image& img) const{
     const auto aspect_ratio = (double)img.width() / (double)img.height();
     auto viewport_h = 2.0;
     auto viewport_w = aspect_ratio * viewport_h;
     auto focal_len = 1.0;
 
-    origin = glm::dvec3(0,0,0);
+    
     auto horizontal = glm::dvec3(viewport_w,0,0);
     auto vertical   = glm::dvec3(0,viewport_h,0);
     auto lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - glm::dvec3(0,0, focal_len);
@@ -38,7 +38,7 @@ void camera::render(image& img){
 
             ray r(origin,(lower_left_corner + u*horizontal + v*vertical - origin));
 
-            img.write_rgb(i,j,ray_color(r));
+            img.write_rgb(i,j,ray_color(r, world));
         }
     }
 }

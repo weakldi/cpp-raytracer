@@ -3,6 +3,10 @@
 #include <limits>
 #include <memory>
 
+
+using std::shared_ptr;
+using std::make_shared;
+
 //Constants
 
 const double infinity   = std::numeric_limits<double>::infinity();

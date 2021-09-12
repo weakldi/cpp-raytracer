@@ -1,15 +1,22 @@
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef WORLD_HPP
+#define WORLD_HPP
 
-#include <memory>
+#include <vector>
 
-#include "camera.hpp"
+#include "util.hpp"
 #include "hittable.hpp"
 
-struct world : public hittable{
+
+class world : public hittable{
     public:
         world() {}
+        
+        void clear() {objects.clear();}
+        void add(shared_ptr<hittable> obj){ objects.push_back(obj);}
 
-        virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record);
+
+        virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const override; 
+    private:
+        std::vector<shared_ptr<hittable>> objects;
 };
-#endif
+#endif /* WORLD */

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "sphere.hpp"
 
-bool sphere::hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) {
+bool sphere::hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const {
     /*
         C = center vector of sphere
         O = origin vector of ray
