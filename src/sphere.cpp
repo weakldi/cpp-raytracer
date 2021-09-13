@@ -51,6 +51,7 @@ bool sphere::hit(const ray& ray,double t_min, double t_max, hit_record& hit_reco
         hit_record.set_face_norlam( ray, normal / m_radius); 
         hit_record.point = hit_point;
         hit_record.time = t; 
+        hit_record.mat_ptr = mat_ptr;
         
         return true;
     }

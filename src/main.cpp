@@ -35,9 +35,17 @@ int main(int argc, char** argv) {
             exit(EXIT_FAILURE);
         } 
     }
-    
-    w.add(make_shared<sphere>(glm::dvec3{0,0,-1},0.5));
-    w.add(make_shared<sphere>(glm::dvec3{0,-100.5,-1},100));
+    shared_ptr<diffuse> mat = make_shared<diffuse>(glm::dvec3{0.5,0.5,0.5});
+
+    auto material_ground = make_shared<diffuse>(glm::dvec3(0.8, 0.8, 0.0));
+    auto material_center = make_shared<diffuse>(glm::dvec3(0.7, 0.3, 0.3));
+    auto material_left   = make_shared<metal>  (glm::dvec3(0.8, 0.8, 0.8),1);
+    auto material_right  = make_shared<metal>  (glm::dvec3(0.8, 0.6, 0.2), 0.0f);
+
+    w.add(make_shared<sphere>(glm::dvec3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    w.add(make_shared<sphere>(glm::dvec3( 0.0,    0.0, -1.0),   0.5, material_center));
+    w.add(make_shared<sphere>(glm::dvec3(-1.0,    0.0, -1.0),   0.5, material_left));
+    w.add(make_shared<sphere>(glm::dvec3( 1.0,    0.0, -1.0),   0.5, material_right));
 
     cam.render(w, img);
     

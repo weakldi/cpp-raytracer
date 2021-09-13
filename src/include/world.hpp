@@ -20,5 +20,4 @@ class world : public hittable{
         std::vector<shared_ptr<hittable>> objects;
 };
 
-void test();
 #endif /* WORLD */

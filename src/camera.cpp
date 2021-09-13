@@ -13,9 +13,16 @@ glm::dvec3 ray_color(const ray& r, const world& world, int32_t depth) {
     hit_record record;
     if(world.hit(r,0.001, infinity, record))
     {
-        glm::dvec3 target = record.point+record.normal+random_point_in_hemisphere(record.normal);
+        //glm::dvec3 target = record.point+record.normal+random_point_in_hemisphere(record.normal);
         
-        return 0.5*ray_color(ray(record.point, target - record.point), world, --depth);
+        //return 0.5*ray_color(ray(record.point, target - record.point), world, --depth);
+
+        ray scattered;
+        glm::dvec3 color;
+        if(record.mat_ptr->scatter(r,record,color,scattered)){
+            return color * ray_color(scattered, world, --depth);
+        }
+        
     }
     auto unit_direction = glm::normalize(r.m_dir);
     

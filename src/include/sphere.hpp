@@ -4,17 +4,19 @@
 #include "hittable.hpp"
 #include "glm.hpp"
 #include "ray.hpp"
+#include "material.hpp"
 
 class sphere : public hittable{
     public:
         sphere() = delete;
-        sphere(const glm::dvec3& origin, const double radius)
-            : m_orig(origin), m_radius(radius) {}
+        sphere(const glm::dvec3& origin, const double radius, shared_ptr<material> mat_ptr)
+            : m_orig(origin), m_radius(radius), mat_ptr(mat_ptr) {}
 
         virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const override;
     public:
         glm::dvec3 m_orig;
         double m_radius;
+        shared_ptr<material> mat_ptr;
 };
 
 #endif

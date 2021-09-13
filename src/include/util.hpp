@@ -10,6 +10,7 @@
 //includes
 #include "ray.hpp"
 #include "glm.hpp"
+#include "vector_util.hpp"
 
 
 
@@ -23,6 +24,7 @@ const double infinity   = std::numeric_limits<double>::infinity();
 const double pi         = 3.14159265358979323846;
 
 //functions
+bool near_zero(glm::dvec3 in);
 glm::dvec3 random_point_in_hemisphere(glm::dvec3 normal);
 //functions inline
 
@@ -36,30 +38,25 @@ inline double random_double(double min, double max){
 
 inline glm::dvec3 random_point_on_unit_sphere(){
     //r = 1
-    double theta = random_double(0,2*pi);
-    double phi = random_double(0,pi);
-
-    double sin_phi  = std::sin(phi);
-    double cos_theta        = std::sin(theta); 
-
-    double x = cos_theta * sin_phi;
-    double y = sin_phi * std::sin(theta);
-    double z = cos_theta;
+    double phi = random_double()*2*pi;
+    double theta = acos((2*random_double()) - 1);
+    double sin_phi = sin(phi);
+    double x = sin_phi*cos(theta);
+    double y = sin_phi*sin(theta);
+    double z = cos(phi);
     return glm::dvec3{x,y,z};
 }
 
 inline glm::dvec3 random_point_in_unit_sphere(){
+    //r = 1
+    double phi = random_double()*2*pi;
+    double theta = acos((2*random_double()) - 1);
     double r = random_double();
-    r = r/((1-r)*(1-r));
-    double theta = random_double(0,2*pi);
-    double phi = random_double(0,pi);
-
-    double r_sin_phi  = r*std::sin(phi);
-    double cos_theta        = std::sin(theta); 
-
-    double x = cos_theta * r_sin_phi;
-    double y = r_sin_phi * std::sin(theta);
-    double z = r*cos_theta;
+    r = pow(r,1.0/3.0);
+    double sin_phi = sin(phi);
+    double x = sin_phi*cos(theta);
+    double y = sin_phi*sin(theta);
+    double z = cos(phi);
     return glm::dvec3{x,y,z};
 }
 
