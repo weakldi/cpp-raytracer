@@ -18,3 +18,12 @@ bool metal::scatter(const ray& ray_in, const hit_record& record, glm::dvec3& col
     color = this->color;
     return glm::dot(scatter_vec, record.normal) > 0;
 }
+
+bool dielectric::scatter(const ray& ray_in, const hit_record& record, glm::dvec3& color, ray& scattered) const{
+    
+    auto scatter_vec = refract(glm::normalize(ray_in.m_dir), record.normal,record.front_face? (1.0/ir) : ir);
+
+    scattered = ray(record.point,scatter_vec);
+    color = this->color;
+    return true;
+}
