@@ -19,4 +19,20 @@ class sphere : public hittable{
         shared_ptr<material> mat_ptr;
 };
 
+
+class s2 : public hittable{
+    public:
+        s2() = delete;
+        s2(const glm::dvec3& origin, const double radius, shared_ptr<material> mat_ptr)
+            : m_orig(origin), m_radius(radius), mat_ptr(mat_ptr) {}
+
+        virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const override;
+    public:
+        glm::dvec3 m_orig;
+        double m_radius;
+        shared_ptr<material> mat_ptr;
+};
+
+
+
 #endif

@@ -17,7 +17,8 @@
 //using
 using std::shared_ptr;
 using std::make_shared;
-
+using point3 = glm::dvec3;
+using color = glm::dvec3;
 //Constants
 
 const double infinity   = std::numeric_limits<double>::infinity();
@@ -26,6 +27,7 @@ const double pi         = 3.14159265358979323846;
 //functions
 bool near_zero(glm::dvec3 in);
 glm::dvec3 random_point_in_hemisphere(glm::dvec3 normal);
+std::ostream& operator<<(std::ostream& os, const glm::dvec3 vec) ;
 //functions inline
 
 inline double random_double(){
@@ -73,6 +75,20 @@ inline glm::dvec3 random_point_in_unit_sphere_2(){
     }
 }
 
+inline glm::dvec3 random_point_in_uint_disc(){
+    double r = random_double();
+    double theta = random_double() * 2.0 *pi;
+   // std::cout << theta << " " << r << " " <<  r*cos(theta) << "  " << r*sin(theta) << " " <<std::endl;
+    return glm::dvec3{r*cos(theta), r*sin(theta),0};
+}
+
+inline glm::dvec3 random_vec3(){
+    return {random_double(),random_double(),random_double()};
+}
+
+inline glm::dvec3 random_vec3(double min, double max){
+    return {random_double(min, max),random_double(min, max),random_double(min, max)};
+}
 
 inline double clamp(double in, double min, double max){
     if(in < min) return min;

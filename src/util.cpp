@@ -18,3 +18,7 @@ glm::dvec3 random_point_in_hemisphere(glm::dvec3 normal){
     return -vec;
 }
 
+std::ostream& operator<<(std::ostream& os, const glm::dvec3 vec) {
+        os << "{" << vec.x << ", " << vec.y << ", " << vec.z <<"}";
+        return os;
+}

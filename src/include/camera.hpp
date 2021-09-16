@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERA
+#define CAMERA
 
 #include "util.hpp"
 #include "world.hpp"
@@ -8,19 +8,33 @@
 
 struct camera{
     public:
-        camera(){
-            origin = {0,0,0};
-            sampels = 100;
-        }
-
+        camera() = delete;
+        camera(double aspect_ratio, double vfov);
+        camera(point3 origin, point3 look_at, point3 up,double aspect_ratio, double vfov, double aperture, double focus_dist);
+        
         ray get_ray(double u, double v) const;
         void render(const world& world, image& img) const;
         
+       
+        void recalculate_viewport(double aspect_ratio, double vfov);
+
+        void set_aperture(double aperture){
+            lens_radius = aperture / 2.0;
+        }
     public:
-        glm::dvec3 origin;
-        glm::dvec3 eye;
+        point3 origin;
+        point3 look_at;
         glm::dvec3 up;
-        uint32_t sampels;
+        uint32_t sampels = 10;
+        glm::dvec3 horizontal;
+        glm::dvec3 vertical;
+        glm::dvec3 lower_left_corner;
+        double vfov;
+        double focus_dist;
+        double lens_radius;
+    private:
+        glm::dvec3 u,v,w;
+
 };
 
-#endif
+#endif /* CAMERA */
