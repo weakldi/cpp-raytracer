@@ -1,8 +1,11 @@
 #include "camera.hpp"
 
 #include <iostream>
+#include "stdio.h"
 #include "util.hpp"
 #include "sphere.hpp"
+
+#include "thread_pool.hpp"
 
 camera::camera(double aspect_ratio, double vfov){
     //auto aspect_ratio = 16.0/9.0;
@@ -79,6 +82,8 @@ ray camera::get_ray(double s, double t) const {
             (lower_left_corner + s*horizontal + t*vertical - origin - offset));
 }
 
+
+
 void camera::render(const world& world, image& img) const{
     const auto aspect_ratio = (double)img.width() / (double)img.height();
     auto viewport_h = 2.0;
@@ -90,25 +95,36 @@ void camera::render(const world& world, image& img) const{
     auto vertical   = glm::dvec3(0,viewport_h,0);
     auto lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - glm::dvec3(0,0, focal_len);
 
+
+    thread_pool p;
+    
+
+
     for(int j = img.height()-1; j >= 0; --j)
-    {
-        std::cout << "\rScanlines remaining: " << j << ' ' << std::endl;
-        for(int i = 0; i < img.width(); i++)
-        {
-           
-            glm::dvec3 color{0,0,0};
-            for(int32_t sampel = 0; sampel < sampels; sampel++)
+    {        
+        p.add([this, j, &c_img = img, world](){
+            std::cout << "Thread " << std::this_thread::get_id() << " calculating {" << j << ", [" << 0 << ".." << c_img.width()-1 <<"]}\n";
+            for(int i = 0; i < c_img.width(); i++)
             {
                 
-                auto u = (i + random_double()) / (img.width()-1);
-                auto v = (j + random_double()) / (img.height()-1);
-
-                ray r = get_ray(u,v);
+                glm::dvec3 color{0,0,0};
+                for(int32_t sampel = 0; sampel < sampels; sampel++)
+                {
+                    
+                    auto u = (i + random_double()) / (c_img.width()-1);
+                    auto v = (j + random_double()) / (c_img.height()-1);
+    
+                    ray r = get_ray(u,v);
+                    
+                    color += ray_color(r,world,50);
+                }
                 
-                color += ray_color(r,world,50);
+                (c_img).write_rgb(i,j,color,sampels);
             }
-            
-            img.write_rgb(i,j,color,sampels);
-        }
+        });
+
+       
+        
     }
+     p.wait_for_finish();
 }

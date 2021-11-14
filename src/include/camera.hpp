@@ -21,6 +21,8 @@ struct camera{
         void set_aperture(double aperture){
             lens_radius = aperture / 2.0;
         }
+    private:
+        void render_scann_line(const world& world, image& img, int32_t j);
     public:
         point3 origin;
         point3 look_at;

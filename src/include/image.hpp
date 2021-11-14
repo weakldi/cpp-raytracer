@@ -8,12 +8,13 @@ struct image{
     image(const int32_t w, const int32_t h) :
         m_width(w), m_height(h) {
             m_data = new int32_t[w*h];
+            std::cout << "Writing to " << m_data << "\n";
         };
     ~image(){
         delete[] m_data;
     }
 
-    inline void write_rgb(const int32_t x, const int32_t y,const glm::dvec3 color, uint32_t samples){
+    inline void write_rgb(const int32_t x, const int32_t y,const glm::dvec3 color, const uint32_t samples){
         double scale = 1.0 / samples;
         /*
             double r = sqrt(color.r * scale);
@@ -28,18 +29,18 @@ struct image{
         write_rgb(x,y,c);
     }
 
-    inline void write_rgb(const int32_t x, const int32_t y,const glm::dvec3 color){
+    inline void write_rgb(const int32_t x, const int32_t y,const glm::dvec3 color) {
         int32_t c = (static_cast<int32_t>(255.999 * color.r) << 16) | 
                     (static_cast<int32_t>(255.999 * color.g) << 8 ) |
                     (static_cast<int32_t>(255.999 * color.b) <<  0);
         write_rgb(x,y,c);
     }
 
-    inline void write_rgb(const int32_t x, const int32_t y, int32_t rgb){
+    inline void write_rgb(const int32_t x, const int32_t y, const int32_t rgb) {     
         m_data[x+(m_width*(m_height-1-y))] = rgb;
     }
 
-    inline int32_t get_rgb(const int32_t x, const int32_t y){
+    inline int32_t get_rgb(const int32_t x, const int32_t y) {
         return  m_data[x+m_width*y];
     }
 
@@ -66,7 +67,7 @@ struct image{
 
     private:
         int32_t m_width, m_height;
-        int32_t* m_data;
+        int32_t * m_data;
 
 };
 

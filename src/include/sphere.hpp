@@ -13,6 +13,7 @@ class sphere : public hittable{
             : m_orig(origin), m_radius(radius), mat_ptr(mat_ptr) {}
 
         virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const override;
+        virtual aabb bounding_box() const override;
     public:
         glm::dvec3 m_orig;
         double m_radius;
@@ -27,6 +28,7 @@ class s2 : public hittable{
             : m_orig(origin), m_radius(radius), mat_ptr(mat_ptr) {}
 
         virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const override;
+        virtual aabb bounding_box() {return aabb({0,0,0}, {1,1,1});}
     public:
         glm::dvec3 m_orig;
         double m_radius;

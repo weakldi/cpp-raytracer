@@ -6,6 +6,8 @@
 #include "ray.hpp"
 #include "glm.hpp"
 #include "material.hpp"
+#include "aabb.hpp"
+class aabb;
 
 struct hit_record{
     double time;
@@ -32,6 +34,7 @@ struct hit_record{
 class hittable{
     public:
         virtual bool hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const = 0;
+        virtual aabb bounding_box() const = 0;
 };
 
 #endif /* HITTABLE */

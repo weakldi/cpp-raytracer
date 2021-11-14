@@ -8,6 +8,9 @@
 #include "world.hpp"
 #include "hittable_types.hpp"
 
+#include "ray.hpp"
+
+
 void gen_world(world& w){
     auto ground_material = make_shared<diffuse>(color(0.5, 0.5, 0.5));
     w.add(make_shared<sphere>(point3(0,-1000,0), 1000, ground_material));
@@ -59,7 +62,7 @@ int main(int argc, char** argv) {
     auto aperture = 0.1;
 
     camera cam{origin,lookat, vup,16.0/9.0,20,aperture,dist_to_focus};
-    cam.sampels = 500;
+    cam.sampels = 50;
     std::fstream out;
     world w;
 
@@ -84,10 +87,24 @@ int main(int argc, char** argv) {
             exit(EXIT_FAILURE);
         } 
     }
-    gen_world(w);
+    //gen_world(w);
 
-    cam.render(w, img);
+
+    auto material1 = make_shared<dielectric>(glm::dvec3{1,1,1},1.5);
+    w.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
+
+    auto material2 = make_shared<diffuse>(color(0.4, 0.2, 0.1));
+    w.add(make_shared<sphere>(point3(-4, 1, 0), 1.0, material2));
+
+    auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
+    w.add(make_shared<sphere>(point3(4, 1, 0), 1.0, material3));
+
+    //cam.render(w, img);
+    //aabb test{{0,0,0}, {1,1,1}};
+    aabb test(glm::vec3{0,0,0}, glm::vec3{1,1,1});
+    ray r {{0,-1,0}, {1,1,1}};
     
+    std::cout << test.hit(r) << "\n";
     if(out.is_open()){
         std::cout << "Writing...";
         out << img;

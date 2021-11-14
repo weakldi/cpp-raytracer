@@ -58,6 +58,10 @@ bool sphere::hit(const ray& ray,double t_min, double t_max, hit_record& hit_reco
     return false;
 }
 
+aabb sphere::bounding_box() const {
+    return aabb(m_orig-glm::dvec3{m_radius,m_radius,m_radius},
+                m_orig+glm::dvec3{m_radius,m_radius,m_radius});
+}
 
 bool s2::hit(const ray& ray,double t_min, double t_max, hit_record& hit_record) const {
 
